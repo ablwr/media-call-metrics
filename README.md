@@ -13,9 +13,11 @@ Public user goals:
 
 Administrator user goals:
 - [x] can see dashboard with call history
-- [ ] can click on each call to see call details
+- [ ] can see details of a call
 - [ ] call details should include visualized charts for received/sent bits per second and received/sent packet loss
 - [ ] data should be at 15s granularity level
+- [ ] can click on each call to see call details
+- [ ] because calls have sessions, determine how to note those breaks, or if they should be separate charts
 - [ ] Stretch goal: user should be able to delete rooms from the dashboard
 
 ## Getting started
@@ -34,4 +36,6 @@ To get up and running:
 - Clone this repository and open this directory in your terminal
 - Run `npm install` to install dependencies
 - Run `npm start` to start your server
-- Go to [http://localhost:1337/](http://localhost:1337/) in your browser
+- Go to [https://localhost:1337/](http://localhost:1337/) in your browser
+
+*Note bene: This application is configured to run https on localhost using the [https-localhost](https://www.npmjs.com/package/https-localhost) package. This may require extra installation steps. See the package page for more information.*
