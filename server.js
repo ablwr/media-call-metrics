@@ -3,8 +3,12 @@ const cors    = require("cors");
 const express = require("express");
 const secrets = require('dotenv').config();
 
-// Allows for local https on top of
+// Allows for local https on top of express
 const app = require("https-localhost")();
+
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json())
 
 // For cross-origin requests
 app.use(cors());
@@ -15,14 +19,12 @@ app.use(function(req, res, next) {
 });
 
 
-app.use(express.json());
 app.use(express.static("public"));
 
 // Loads the main page, located in the /views folder
 app.get("/", (request, response) => {
   response.sendFile(`${__dirname}/views/index.html`);
 });
-
 
 // If your app isn't running, make sure "DAILY_API=your-code-here"
 // in your .env file (in the root directory) 
@@ -32,7 +34,7 @@ const BASE_URL = "https://api.daily.co/v1/";
 // The axios library helps create asynchronous HTTP requests
 const dailyApi = axios.create({
   baseURL: BASE_URL,
-  headers: { 'Authorization': 'Bearer '+API_AUTH },
+  headers: { "Content-Type": "application/json", 'Authorization': 'Bearer '+API_AUTH },
   timeout: 3000, // this is equal to 3 seconds
 });
 
@@ -40,8 +42,8 @@ const dailyApi = axios.create({
 const apiBuilder = async (method, endpoint, body = {}) => {
   try {
     const response = await dailyApi.request({
-      url:    endpoint,
       method: method,
+      url:    endpoint,
       data:   body
     });
     return response.data;
@@ -65,7 +67,7 @@ app.get("/rooms", async (request, response) => {
 });
 
 // create a new room
-app.post("/rooms", async (request, response) => {
+app.post("/make-room", async (request, response) => {
   try {
     const rooms = await apiBuilder("post", "/rooms", request.body);
     response.json(rooms);
