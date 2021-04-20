@@ -17,6 +17,12 @@ Administrator user goals:
 
 ## Development
 
-TODO
+To run this application locally, you need:
+- An API key from [Daily.co](https://daily.co), an audio/video API.
+- `npm` installed and running on your computer. `npm` is a package manager for Node.js, which is used to build the server component of this application. Node.js is a JavaScript library for doing this kind of work. Even though `npm` is for Node.js, it also includes a lot of other libraries that allow this application to download everything it needs to run smoothly on your computer. You can find installation instructions and more information [here](https://www.npmjs.com/).
 
-
+To get up and running:
+- Clone this repository and open this directory in your terminal
+- Run `npm install` to install dependencies
+- Run `npm start` to start your server
+- Go to [http://localhost:1337/](http://localhost:1337/) in your browser

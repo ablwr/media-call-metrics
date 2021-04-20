@@ -1,0 +1,29 @@
+{
+  "name": "media-call-metrics",
+  "version": "0.0.1",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "https-localhost": "^4.6.4",
+    "sqlite3": "^4.1.1"
+  },
+  "engines": {
+    "node": "12.x"
+  },
+  "repository": {
+    "url": ""
+  },
+  "license": "public domain",
+  "keywords": [
+    "video",
+    "webrtc",
+    "daily"
+  ]
+}
