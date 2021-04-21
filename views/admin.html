@@ -7,11 +7,10 @@
   <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-  <header><h1>media-call-metrics administrator zone</h1></header>
+  <header><h1>media-call-metrics admin zone</h1></header>
   <aside><div id="error"></div></aside>
   <main>
     <h2>The admin zone!</h2>
-    <div class="adminView">
       <button id="getRooms">
         Get rooms
       </button>
@@ -19,8 +18,11 @@
         <h3>List of rooms</h3>
         <ul id="roomsList"></ul>
       </section>
-    </div>
+      <section class="sessions">
+        <canvas id="videoSendBitsPerSecond"></canvas>
+      </section>
   </main>
 </body>
-<script src="admin.js" defer></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>
+<script type="text/javascript" src="admin.js" defer></script>
 </html>

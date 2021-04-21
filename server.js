@@ -45,8 +45,8 @@ db.serialize(() => {
 app.get("/", (request, response) => {
   response.sendFile(`${__dirname}/views/index.html`);
 });
-app.get("/administrator", (request, response) => {
-  response.sendFile(`${__dirname}/views/administrator.html`);
+app.get("/admin", (request, response) => {
+  response.sendFile(`${__dirname}/views/admin.html`);
 });
 
 // If your app isn't running, make sure "DAILY_API=your-code-here"
@@ -88,7 +88,7 @@ app.post("/make-room", async (request, response) => {
 // log data from client
 app.post("/log-data", async (request, response) => {
   try {
-      console.log(request.body.user_id);
+      console.log("logging user" + request.body.user_id);
       db.run(`INSERT INTO Logs (session_id, user_id, logs) VALUES (?, ?, ?)`, 
         request.body.session_id, request.body.user_id, request.body.logs, 
         error => {
