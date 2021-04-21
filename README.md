@@ -8,6 +8,7 @@ Public user goals:
 - [x] can create a video conference room
 - [x] can send video conference link to friends
 - [x] more than one user can do this at a time (conference IDs are generated and unique, not everyone joining the same room -- that's awkward)
+- [ ] Consider if users should only need to create a session, not a new room
 - [ ] Stretch goal: pass in randomly generated but human-readable name
 - [ ] Stretch goal: set rooms to auto-delete after X amount of minutes 
 

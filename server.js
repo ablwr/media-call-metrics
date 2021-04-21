@@ -1,24 +1,45 @@
-const axios      = require("axios");
-const bodyParser = require('body-parser');
-const cors       = require("cors");
-const express    = require("express");
-const secrets    = require('dotenv').config();
+const axios   = require("axios");
+const body    = require('body-parser');
+const cors    = require("cors");
+const express = require("express");
+const fs      = require("fs");
+const secrets = require('dotenv').config();
+const sqlite3 = require("sqlite3").verbose();
+
+// * * * These functions help set up express
 
 // Allows for local https on top of express
 const app = require("https-localhost")();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json())
-
-// For cross-origin requests
+app.use(body.urlencoded({ extended: true }));
+app.use(body.json())
 app.use(cors());
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
-
 app.use(express.static("public"));
+
+// * * * These functions set up sqlite
+
+const dbFile = "./data/sqlite.db";
+const exists = fs.existsSync(dbFile);
+const db = new sqlite3.Database(dbFile);
+
+// Create new database (if it doesn't exist already)
+db.serialize(() => {
+  console.log("Running serialize db")
+  if (!exists) {
+    db.run(
+      "CREATE TABLE Logs (id INTEGER PRIMARY KEY AUTOINCREMENT, session_id TEXT, client_id TEXT, logs TEXT)"
+    );
+    console.log("Logs database created");
+  } else { console.log('Logging is already ready'); }
+});
+
+
+// * * * These functions control routing
 
 // Loads the main page, located in the /views folder
 app.get("/", (request, response) => {
@@ -37,22 +58,7 @@ const dailyApi = axios.create({
   timeout: 3000, // this is equal to 3 seconds
 });
 
-// This helper function communicates with the Daily.co API
-const apiBuilder = async (method, endpoint, body = {}) => {
-  try {
-    const response = await dailyApi.request({
-      method: method,
-      url:    endpoint,
-      data:   body
-    });
-    return response.data;
-  } catch (error) {
-    console.log("Error status: ", error.response.status);
-    console.log("Error message: ", error.response.statusText);
-    document.getElementById("error").innerText = "You found a bug!";
-    throw new Error(error);
-  }
-};
+
 
 // get list of existing rooms
 app.get("/rooms", async (request, response) => {
@@ -76,11 +82,45 @@ app.post("/make-room", async (request, response) => {
   }
 });
 
+// log data from client
+app.post("/log-data", async (request, response) => {
+  try {
+      db.run(`INSERT INTO Logs (session_id, client_id, logs) VALUES (?, ?, ?)`, 
+        request.body.session_id, request.body.client_id, request.body.logs, 
+        error => {
+          if (error) {
+            response.send({ message: "Sorry, there was a problem writing to the database!" });
+          } else {
+            response.send({ message: "success" });
+          }
+      });
+  } catch (e) {
+    console.log("error: ", e);
+    response.status(500).json({ error: e.message });    
+  }
 
-// Just a reminder that everything is running, and where
+})
+
+
+// * * * These functions are helper methods
+
+const apiBuilder = async (method, endpoint, body = {}) => {
+  try {
+    const response = await dailyApi.request({
+      method: method,
+      url:    endpoint,
+      data:   body
+    });
+    return response.data;
+  } catch (error) {
+    console.log("Error status: ", error.response.status);
+    console.log("Error message: ", error.response.statusText);
+    document.getElementById("error").innerText = "You found a bug!";
+    throw new Error(error);
+  }
+};
+
 const listener = app.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);
 });
-
-
 

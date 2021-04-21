@@ -32,18 +32,37 @@ document.getElementById("makeRoom").onclick = function() {
     document.getElementById("newRoom").innerText = response["url"];
     callFrame = window.DailyIframe.createFrame();
 	  callFrame.join({ url: response["url"] });
+
+		window.setInterval(function() {
+		  collection();
+		}, 15000); // 15000 milliseconds or 15 seconds
+
   })
   .catch(err => console.error(err));
 };
 
 async function collection() {
+	// We need videoRecvBitsPerSecond, videoRecvPacketLoss, 
+	// videoSendBitsPerSecond, videoSendPacketLoss
+  // and timestamp
 	let netStats = await callFrame.getNetworkStats();
-	console.log(netStats.stats.latest.videoRecvBitsPerSecond);
-	console.log(netStats.stats.latest.videoRecvPacketLoss);
-	console.log(netStats.stats.latest.videoSendBitsPerSecond);
-	console.log(netStats.stats.latest.videoSendPacketLoss);
+  let session_id = callFrame.participants().local.session_id;
+  let client_id = callFrame.participants().local.client_id;
+	// insert netStats.stats.latest into sqlite database
+  const data = { "session_id": session_id, "client_id": client_id, "logs": JSON.stringify(netStats.stats.latest) };
+  console.log(data);
+  fetch("/log-data", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: { "Content-Type": "application/json" }
+  })
+    .then(res => res.json())
+    .then(response => {
+    	// do nothing
+    })
+
 }
 
-window.setInterval(function() {
-  collection();
-}, 15000); // 15000 milliseconds or 15 seconds
+// window.setInterval(function() {
+//   collection();
+// }, 15000); // 15000 milliseconds or 15 seconds
