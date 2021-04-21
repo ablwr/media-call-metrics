@@ -15,9 +15,10 @@ Administrator user goals:
 - [x] can see dashboard with call history
 - [ ] can see details of a call
 - [ ] call details should include visualized charts for received/sent bits per second and received/sent packet loss
+- [ ] because calls have sessions, determine how to note those breaks, or if they should be separate charts
+- [ ] call details should be per user
 - [ ] data should be at 15s granularity level
 - [ ] can click on each call to see call details
-- [ ] because calls have sessions, determine how to note those breaks, or if they should be separate charts
 - [ ] Stretch goal: user should be able to delete rooms from the dashboard
 
 ## Getting started
@@ -34,6 +35,7 @@ To run this application locally, you need:
 
 To get up and running:
 - Clone this repository and open this directory in your terminal
+- Add your Daily.co API key to a `.env` file in the root of your folder, like this: `DAILY_API=your-api-key-here`
 - Run `npm install` to install dependencies
 - Run `npm start` to start your server
 - Go to [https://localhost:1337/](http://localhost:1337/) in your browser

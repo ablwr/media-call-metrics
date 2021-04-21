@@ -29,7 +29,21 @@ document.getElementById("makeRoom").onclick = function() {
   	console.log(response);
   	document.getElementById('newRoomWrapper').style.display = "";
     document.getElementById("newRoom").setAttribute("href", response["url"]);
+    document.getElementById("newRoom").innerText = response["url"];
+    callFrame = window.DailyIframe.createFrame();
+	  callFrame.join({ url: response["url"] });
   })
   .catch(err => console.error(err));
 };
 
+async function collection() {
+	let netStats = await callFrame.getNetworkStats();
+	console.log(netStats.stats.latest.videoRecvBitsPerSecond);
+	console.log(netStats.stats.latest.videoRecvPacketLoss);
+	console.log(netStats.stats.latest.videoSendBitsPerSecond);
+	console.log(netStats.stats.latest.videoSendPacketLoss);
+}
+
+window.setInterval(function() {
+  collection();
+}, 15000); // 15000 milliseconds or 15 seconds

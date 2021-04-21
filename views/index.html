@@ -5,25 +5,29 @@
   <meta content="text/html; charset=UTF-8" http-equiv="content-type">
   <meta name="viewport" content="width=device-width">
   <link href="style.css" rel="stylesheet" type="text/css">
-  <script src="client.js" defer></script>
 </head>
 <body>
   <header><h1>media-call-metrics</h1></header>
   <aside><div id="error"></div></aside>
   <main>
-  	<div>
+  	<h2>The user zone!</h2>
+  	<div class="userView">
       <button id="makeRoom">Make a room</button>
       <span style="display:none;" id="newRoomWrapper"><a id="newRoom" href="">Visit room</a></span>
     </div>
-    <div>
+    <hr/>
+    <h2>The admin zone!</h2>
+    <div class="adminView">
       <button id="getRooms">
         Get rooms
       </button>
       <section class="dataSection">
-        <h2>List of rooms</h2>
+        <h3>List of rooms</h3>
         <ul id="roomsList"></ul>
       </section>
     </div>
   </main>
 </body>
+<script crossorigin src="https://unpkg.com/@daily-co/daily-js"></script>
+<script src="client.js" defer></script>
 </html>

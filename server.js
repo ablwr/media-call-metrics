@@ -1,12 +1,12 @@
-const axios   = require("axios");
-const cors    = require("cors");
-const express = require("express");
-const secrets = require('dotenv').config();
+const axios      = require("axios");
+const bodyParser = require('body-parser');
+const cors       = require("cors");
+const express    = require("express");
+const secrets    = require('dotenv').config();
 
 // Allows for local https on top of express
 const app = require("https-localhost")();
 
-var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 
@@ -17,7 +17,6 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
-
 
 app.use(express.static("public"));
 
