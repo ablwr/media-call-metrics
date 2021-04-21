@@ -14,11 +14,11 @@ Public user goals:
 
 Administrator user goals:
 - [x] can see dashboard with call history
-- [ ] can see details of a call
+- [x] can see details of a call
 - [ ] call details should include visualized charts for received/sent bits per second and received/sent packet loss
 - [ ] because calls have sessions, determine how to note those breaks, or if they should be separate charts
 - [ ] call details should be per user
-- [ ] data should be at 15s granularity level
+- [x] data should be at 15s granularity level
 - [ ] can click on each call to see call details
 - [ ] Stretch goal: user should be able to delete rooms from the dashboard
 
