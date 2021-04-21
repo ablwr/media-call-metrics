@@ -1,24 +1,3 @@
-const roomsList = document.getElementById("roomsList");
-
-document.getElementById("getRooms").onclick = function() {
-	fetch("/rooms", {})
-	  .then(res => res.json())
-	  .then(response => {
-    	roomsList.innerHTML = "";
-	    response["data"].forEach(data => {
-	      appendNewData(data);
-	    });
-	  });
-}
-
-const appendNewData = data => {
-  const d = data["url"];
-  const newListItem = document.createElement("li");
-  newListItem.innerHTML = d;
-  roomsList.appendChild(newListItem);
-};
-
-
 document.getElementById("makeRoom").onclick = function() {
   fetch("/make-room", {
     method: "POST",
@@ -47,9 +26,9 @@ async function collection() {
   // and timestamp
 	let netStats = await callFrame.getNetworkStats();
   let session_id = callFrame.participants().local.session_id;
-  let client_id = callFrame.participants().local.client_id;
+  let user_id = callFrame.participants().local.user_id;
 	// insert netStats.stats.latest into sqlite database
-  const data = { "session_id": session_id, "client_id": client_id, "logs": JSON.stringify(netStats.stats.latest) };
+  const data = { "session_id": session_id, "user_id": user_id, "logs": JSON.stringify(netStats.stats.latest) };
   console.log(data);
   fetch("/log-data", {
     method: "POST",
@@ -63,6 +42,7 @@ async function collection() {
 
 }
 
+// this is the debug zone
 // window.setInterval(function() {
 //   collection();
 // }, 15000); // 15000 milliseconds or 15 seconds

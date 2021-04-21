@@ -32,7 +32,7 @@ db.serialize(() => {
   console.log("Running serialize db")
   if (!exists) {
     db.run(
-      "CREATE TABLE Logs (id INTEGER PRIMARY KEY AUTOINCREMENT, session_id TEXT, client_id TEXT, logs TEXT)"
+      "CREATE TABLE Logs (id INTEGER PRIMARY KEY AUTOINCREMENT, session_id TEXT, user_id TEXT, logs TEXT)"
     );
     console.log("Logs database created");
   } else { console.log('Logging is already ready'); }
@@ -41,9 +41,12 @@ db.serialize(() => {
 
 // * * * These functions control routing
 
-// Loads the main page, located in the /views folder
+// Loads the main pages, located in the /views folder
 app.get("/", (request, response) => {
   response.sendFile(`${__dirname}/views/index.html`);
+});
+app.get("/administrator", (request, response) => {
+  response.sendFile(`${__dirname}/views/administrator.html`);
 });
 
 // If your app isn't running, make sure "DAILY_API=your-code-here"
@@ -85,8 +88,9 @@ app.post("/make-room", async (request, response) => {
 // log data from client
 app.post("/log-data", async (request, response) => {
   try {
-      db.run(`INSERT INTO Logs (session_id, client_id, logs) VALUES (?, ?, ?)`, 
-        request.body.session_id, request.body.client_id, request.body.logs, 
+      console.log(request.body.user_id);
+      db.run(`INSERT INTO Logs (session_id, user_id, logs) VALUES (?, ?, ?)`, 
+        request.body.session_id, request.body.user_id, request.body.logs, 
         error => {
           if (error) {
             response.send({ message: "Sorry, there was a problem writing to the database!" });
