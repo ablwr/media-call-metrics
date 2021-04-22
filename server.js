@@ -61,9 +61,18 @@ const dailyApi = axios.create({
   timeout: 3000, // this is equal to 3 seconds
 });
 
+// create a new room
+app.post("/make-room", async (request, response) => {
+  try {
+    const rooms = await apiBuilder("post", "/rooms", request.body);
+    response.json(rooms);
+  } catch (e) {
+    console.log("error: ", e);
+    response.status(500).json({ error: e.message });
+  }
+});
 
-
-// get list of existing rooms
+// get list of existing rooms from Daily
 app.get("/rooms", async (request, response) => {
   try {
     const rooms = await apiBuilder("get", "/rooms");
@@ -74,14 +83,27 @@ app.get("/rooms", async (request, response) => {
   }
 });
 
-// create a new room
-app.post("/make-room", async (request, response) => {
+// gets list of sessions
+app.get("/sessions", async (request, response) => {
   try {
-    const rooms = await apiBuilder("post", "/rooms", request.body);
-    response.json(rooms);
-  } catch (e) {
-    console.log("error: ", e);
-    response.status(500).json({ error: e.message });
+      console.log("getting list of existing sessions from database");
+      db.all("SELECT DISTINCT session_id from Logs", (err, rows) => {
+        response.send(JSON.stringify(rows));
+      });
+  } catch(e) {
+    response.status(500).json({ error: e.message})
+  }
+});
+
+// get data for a session
+app.post("/session-data", async (request, response) => {
+  try {
+      console.log("getting session data for session UUID " + JSON.stringify(request.body.session_id));
+      db.all("SELECT user_id, logs from Logs WHERE session_id = " + JSON.stringify(request.body.session_id), (err, rows) => {
+        response.send(JSON.stringify(rows));
+      });
+  } catch(e) {
+    response.status(500).json({ error: e.message})
   }
 });
 

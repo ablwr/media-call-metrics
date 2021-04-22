@@ -37,12 +37,7 @@ async function collection() {
   })
     .then(res => res.json())
     .then(response => {
-    	// do nothing
+    	// do nothing, it's fine
     })
 
 }
-
-// this is the debug zone
-// window.setInterval(function() {
-//   collection();
-// }, 15000); // 15000 milliseconds or 15 seconds
