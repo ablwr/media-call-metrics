@@ -29,7 +29,7 @@ const db = new sqlite3.Database(dbFile);
 
 // Create new database (if it doesn't exist already)
 db.serialize(() => {
-  console.log("Running serialize db")
+  console.log("Checking for database")
   if (!exists) {
     db.run(
       "CREATE TABLE Logs (id INTEGER PRIMARY KEY AUTOINCREMENT, session_id TEXT, user_id TEXT, logs TEXT)"
@@ -127,6 +127,27 @@ app.post("/log-data", async (request, response) => {
 
 })
 
+let rooms = [
+  { url_id: "hello-daily" },
+  { url_id: "hello-ashley" },
+];
+
+
+app.param('room', function(request, response, next, value){
+  if (rooms.find(obj => obj.url_id == value)) {
+    next();
+  } else {
+    // This is a reference to the 1995 masterwork Hackers, because
+    // you should only hit this is you are changing the URL in the browser
+    next(errorBuilder(404, 'This room does not exist, acid burn sez leave b 4 u r expunged'));
+  }
+});
+
+app.get('/room/:room', function (request, response, next) {
+  // response.send('room ' + request.room.url_id)
+  response.sendFile(`${__dirname}/views/room.html`);
+})
+
 
 // * * * These functions are helper methods
 
@@ -145,6 +166,12 @@ const apiBuilder = async (method, endpoint, body = {}) => {
     throw new Error(error);
   }
 };
+
+function errorBuilder(status, message) {
+  let err = new Error(message);
+  err.status = status;
+  return err;
+}
 
 const listener = app.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);
