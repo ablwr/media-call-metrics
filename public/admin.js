@@ -6,12 +6,12 @@ document.getElementById("getRooms").onclick = function() {
 	  .then(response => {
     	roomsList.innerHTML = "";
 	    response["data"].forEach(data => {
-	      appendNewData(data);
+	      appendNewRoom(data);
 	    });
 	  });
 }
 
-const appendNewData = data => {
+const appendNewRoom = data => {
   const d = data["url"];
   const newListItem = document.createElement("li");
   newListItem.innerHTML = d;
@@ -24,15 +24,19 @@ window.addEventListener('load', (event) => {
     .then(response => {
       document.getElementById("sessionsList").innerHTML = "";
       response.forEach(data => {
-        const newSessionButton = document.createElement("button");
-        newSessionButton.classList.add('sessionButton');
-        newSessionButton.innerText = data["session_id"];
-        document.getElementById("sessionsList").appendChild(newSessionButton);
-        document.getElementById("sessionsList").appendChild(document.createElement("br"));
-        makeUserButtons();
+        appendNewSession(data)
       });
     });
 });
+
+const appendNewSession = data => {
+    const newSessionButton = document.createElement("button");
+    newSessionButton.classList.add('sessionButton');
+    newSessionButton.innerText = data["session_id"];
+    document.getElementById("sessionsList").appendChild(newSessionButton);
+    document.getElementById("sessionsList").appendChild(document.createElement("br"));
+    makeUserButtons();
+};
 
 // button needs to become whichever session UUID is clicked
 let makeUserButtons = function() {
@@ -52,10 +56,10 @@ document.querySelectorAll('.sessionButton').forEach(button => {
       );
       
       usersAndTheirLogs.forEach(function (user){
-        const newUserButton = document.createElement("button");
-        newUserButton.classList.add('userButton');
-        newUserButton.innerText = user["user_id"];
-        document.getElementById("usersList").appendChild(newUserButton);
+        const newUserListItem = document.createElement("li");
+        newUserListItem.classList.add('userListItem');
+        newUserListItem.innerText = user["user_id"];
+        document.getElementById("usersList").appendChild(newUserListItem);
         document.getElementById("usersList").appendChild(document.createElement("br"));
         buildChartsForUser(user);
       });
@@ -64,10 +68,6 @@ document.querySelectorAll('.sessionButton').forEach(button => {
   }
 });
 }
-
-// document.querySelectorAll('.sessionButton').forEach(button => {
-//   buildChartsForUser(user);
-// });
 
 let buildChartsForUser = function(user) {
   let ts = []
@@ -103,17 +103,17 @@ let deleteChart = function(label){
   document.getElementById(label).remove();
   let canvas = document.createElement('canvas');
   canvas.setAttribute('id', label);
-  document.getElementById("sessions").appendChild(canvas);
+  document.getElementById("charts").appendChild(canvas);
 }
 
 // not using any opts right now -- focus not on design!
-let opts = {}
+let opts = {responsive: true}
 
 // 4 charts is best but lets just put them all in one for now
 let buildChart = function(label, time, data, opts) {
   let canvas = document.createElement('canvas');
   canvas.setAttribute('id', label);
-  document.getElementById("sessions").appendChild(canvas);
+  document.getElementById("charts").appendChild(canvas);
   new Chart(document.getElementById(label).getContext('2d'), {
     type: 'line',
     data: {

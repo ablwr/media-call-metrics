@@ -20,11 +20,22 @@ button {
 	line-height: 1.5rem;
 	text-decoration: none;
 	font-family: monospace;
-	font-weight: 400;
 	margin: 0.5em;
 	}
 
 button:hover {
 	cursor: pointer;
 	padding: 0.3em 0.4em 0.3em 0.4em;
+}
+
+.userListItem {
+	border-bottom: 2px solid #1bebb9;
+	border-top: 2px solid #1bebb9;
+	max-width: 25em;
+	font-size: 1.2rem;
+}
+
+#charts {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
 }

@@ -10,23 +10,24 @@
   <header><h1>media-call-metrics admin zone</h1></header>
   <aside><a href="/">go back</a></aside>
   <main>
-    <h2>The admin zone!</h2>
-
-      <section class="dataSection">
-        <h3>List of rooms</h3>
-        <button id="getRooms">Get rooms</button>
-        <ul id="roomsList"></ul>
-        <h3>List of sessions</h3>
-        <ul id="sessionsList">
-          <!-- Buttons with each Session ID build here (see public/admin.js) -->
-        </ul>
-        <h3>List of users pers session</h3>
-        <ul id="usersList">
-          <!-- Buttons with each Session ID build here (see public/admin.js) -->
-        </ul>
+    <section class="dataSection">
+      <h3>List of rooms</h3>
+      <button id="getRooms">Get rooms</button>
+      <ul id="roomsList"></ul>
+      <h3>List of sessions</h3>
+      <p>Select your session</p>
+      <ul id="sessionsList">
+        <!-- Buttons with each Session ID build here (see public/admin.js) -->
+      </ul>
+      <h3>List of users pers session</h3>
+      <ul id="usersList">
+        <!-- User ID list builds here (see public/admin.js) -->
+      </ul>
+      <h3>Charts</h3>
+      <section id="charts">
+        <!-- Charts for each User ID build here (see public/admin.js) -->
       </section>
-      <section id="sessions">
-      </section>
+    </section>
   </main>
 </body>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.1/chart.min.js"></script>

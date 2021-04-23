@@ -7,7 +7,10 @@ const path    = require('path')
 const secrets = require('dotenv').config();
 const sqlite3 = require("sqlite3").verbose();
 
-// * * * These functions help set up express
+
+/* * * 
+These functions set up express
+* * */
 
 const app = express();
 
@@ -21,9 +24,9 @@ app.use(function(req, res, next) {
 });
 app.use(express.static("public"));
 
-// * * * These functions set up sqlite
-
-
+/* * * 
+These functions set up sqlite
+* * */
 
 const dbFile = path.resolve(__dirname, 'sqlite.db')
 const exists = fs.existsSync(dbFile);
@@ -41,7 +44,9 @@ db.serialize(() => {
 });
 
 
-// * * * These functions control routing
+/* * * 
+These functions control routing
+* * */
 
 // Loads the main pages, located in the /views folder
 app.get("/", (request, response) => {
@@ -63,11 +68,9 @@ const dailyApi = axios.create({
   timeout: 3000, // this is equal to 3 seconds
 });
 
-let roomsToLog = [
-  { url_id: "hello-daily" },
-];
 
 // create a new room
+let roomsToLog = [];
 app.post("/make-room", async (request, response) => {
   try {
     const rooms = await apiBuilder("post", "/rooms", request.body);
@@ -117,7 +120,6 @@ app.post("/session-data", async (request, response) => {
 // log data from client
 app.post("/log-data", async (request, response) => {
   try {
-      console.log("logging user" + request.body.user_id);
       db.run(`INSERT INTO Logs (session_id, user_id, logs) VALUES (?, ?, ?)`, 
         request.body.session_id, request.body.user_id, request.body.logs, 
         error => {
@@ -134,15 +136,13 @@ app.post("/log-data", async (request, response) => {
 
 })
 
-
 // Routes to call rooms
 app.param('room', function(request, response, next, value){
   if (roomsToLog.find(obj => obj.url_id == value)) {
     next();
   } else {
-    // This is a reference to the 1995 masterwork Hackers, because
-    // you should only hit this is you are changing the URL in the browser
-    next(errorBuilder(404, 'This room does not exist, acid burn sez leave b 4 u r expunged'));
+    // This would benefit from error handling
+    next();
   }
 });
 
@@ -152,7 +152,9 @@ app.get('/room/:room', function (request, response, next) {
 })
 
 
-// * * * These functions are helper methods
+/* * * 
+These functions are helper methods
+* * */
 
 const apiBuilder = async (method, endpoint, body = {}) => {
   try {
@@ -169,12 +171,6 @@ const apiBuilder = async (method, endpoint, body = {}) => {
     throw new Error(error);
   }
 };
-
-function errorBuilder(status, message) {
-  let err = new Error(message);
-  err.status = status;
-  return err;
-}
 
 const listener = app.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);
