@@ -8,8 +8,7 @@ const sqlite3 = require("sqlite3").verbose();
 
 // * * * These functions help set up express
 
-// Allows for local https on top of express
-const app = require("https-localhost")();
+const app = express();
 
 app.use(body.urlencoded({ extended: true }));
 app.use(body.json())
