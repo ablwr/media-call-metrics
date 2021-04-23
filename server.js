@@ -104,7 +104,7 @@ app.get("/sessions", async (request, response) => {
 app.post("/session-data", async (request, response) => {
   try {
       console.log("getting session data for session UUID " + JSON.stringify(request.body.session_id));
-      db.all("SELECT user_id, logs from Logs WHERE session_id = " + JSON.stringify(request.body.session_id), (err, rows) => {
+      db.all("SELECT session_id, user_id, logs from Logs WHERE session_id = " + JSON.stringify(request.body.session_id), (err, rows) => {
         response.send(JSON.stringify(rows));
       });
   } catch(e) {
@@ -133,8 +133,7 @@ app.post("/log-data", async (request, response) => {
 })
 
 
-
-
+// Routes to call rooms
 app.param('room', function(request, response, next, value){
   if (roomsToLog.find(obj => obj.url_id == value)) {
     next();
@@ -145,8 +144,8 @@ app.param('room', function(request, response, next, value){
   }
 });
 
+// directs param to call room
 app.get('/room/:room', function (request, response, next) {
-  // response.send('room ' + request.room.url_id)
   response.sendFile(`${__dirname}/views/room.html`);
 })
 

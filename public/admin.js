@@ -29,13 +29,13 @@ window.addEventListener('load', (event) => {
         newSessionButton.innerText = data["session_id"];
         document.getElementById("sessionsList").appendChild(newSessionButton);
         document.getElementById("sessionsList").appendChild(document.createElement("br"));
-        buttons();
+        makeUserButtons();
       });
     });
 });
 
 // button needs to become whichever session UUID is clicked
-let buttons = function() {
+let makeUserButtons = function() {
 document.querySelectorAll('.sessionButton').forEach(button => {
   button.onclick = function() {
   fetch("/session-data", {
@@ -46,15 +46,17 @@ document.querySelectorAll('.sessionButton').forEach(button => {
     .then(res => res.json())
     .then(response => {
       // this big thing condenses the SQL rows into each user with their respective logs
-      console.log(response)
       const usersAndTheirLogs = Array.from(response.reduce((map, {user_id, logs}) => 
           map.set(user_id, [...(map.get(user_id) || []), JSON.parse(logs)]), new Map
         ), ([user_id, logs]) => ({user_id, logs})
       );
-
-      console.log(usersAndTheirLogs);
       
       usersAndTheirLogs.forEach(function (user){
+        const newUserButton = document.createElement("button");
+        newUserButton.classList.add('userButton');
+        newUserButton.innerText = user["user_id"];
+        document.getElementById("usersList").appendChild(newUserButton);
+        document.getElementById("usersList").appendChild(document.createElement("br"));
         buildChartsForUser(user);
       });
 
@@ -62,6 +64,10 @@ document.querySelectorAll('.sessionButton').forEach(button => {
   }
 });
 }
+
+// document.querySelectorAll('.sessionButton').forEach(button => {
+//   buildChartsForUser(user);
+// });
 
 let buildChartsForUser = function(user) {
   let ts = []
@@ -84,10 +90,10 @@ let buildChartsForUser = function(user) {
                "videoSendPacketLoss": send_loss 
              }
 
-  buildChart("videoRecvBitsPerSecond", data["timestamps"], data["videoRecvBitsPerSecond"], opts)
-  buildChart("videoRecvPacketLoss", data["timestamps"], data["videoRecvPacketLoss"], opts)
-  buildChart("videoSendBitsPerSecond", data["timestamps"], data["videoSendBitsPerSecond"], opts)
-  buildChart("videoSendPacketLoss", data["timestamps"], data["videoSendPacketLoss"], opts)
+  buildChart("videoRecvBitsPerSecond for User#"+user.user_id, data["timestamps"], data["videoRecvBitsPerSecond"], opts)
+  buildChart("videoRecvPacketLoss for User#"+user.user_id, data["timestamps"], data["videoRecvPacketLoss"], opts)
+  buildChart("videoSendBitsPerSecond for User#"+user.user_id, data["timestamps"], data["videoSendBitsPerSecond"], opts)
+  buildChart("videoSendPacketLoss for User#"+user.user_id, data["timestamps"], data["videoSendPacketLoss"], opts)
 }
 
 // Chart.js has issues with destroying/refreshing, this manually forces a deletion
@@ -105,7 +111,9 @@ let opts = {}
 
 // 4 charts is best but lets just put them all in one for now
 let buildChart = function(label, time, data, opts) {
-  deleteChart(label);
+  let canvas = document.createElement('canvas');
+  canvas.setAttribute('id', label);
+  document.getElementById("sessions").appendChild(canvas);
   new Chart(document.getElementById(label).getContext('2d'), {
     type: 'line',
     data: {
