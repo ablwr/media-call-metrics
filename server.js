@@ -3,13 +3,13 @@ const body    = require('body-parser');
 const cors    = require("cors");
 const express = require("express");
 const fs      = require("fs");
+const path    = require('path') 
 const secrets = require('dotenv').config();
 const sqlite3 = require("sqlite3").verbose();
 
 // * * * These functions help set up express
 
-// Allows for local https on top of express
-const app = require("https-localhost")();
+const app = express();
 
 app.use(body.urlencoded({ extended: true }));
 app.use(body.json())
@@ -23,7 +23,9 @@ app.use(express.static("public"));
 
 // * * * These functions set up sqlite
 
-const dbFile = "./data/sqlite.db";
+
+
+const dbFile = path.resolve(__dirname, 'sqlite.db')
 const exists = fs.existsSync(dbFile);
 const db = new sqlite3.Database(dbFile);
 
