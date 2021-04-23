@@ -7,3 +7,24 @@ canvas {
 	max-width: 500px;
 	max-height: 300px;
 }
+
+button {
+	display: inline-block;
+	height: 34px;
+	padding: 0.1em 0.2em 0.1em 0.2em;
+	border-radius: 0px;
+	border: 2px solid #1bebb9;
+	background-color: white;
+	color: #121a24;
+	font-size: 1.2rem;
+	line-height: 1.5rem;
+	text-decoration: none;
+	font-family: monospace;
+	font-weight: 400;
+	margin: 0.5em;
+	}
+
+button:hover {
+	cursor: pointer;
+	padding: 0.3em 0.4em 0.3em 0.4em;
+}

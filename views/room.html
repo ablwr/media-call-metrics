@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>media-call-metrics -- room</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+  <meta name="viewport" content="width=device-width">
+  <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <header><h1>welcome to your video call</h1></header>
+  <main>
+    <hr/>
+  </main>
+<script crossorigin src="https://unpkg.com/@daily-co/daily-js"></script>
+<script>
+  callFrame = window.DailyIframe.createFrame({
+    showLeaveButton: true,
+    iframeStyle: {
+      position: 'fixed',
+      width: '80%',
+     height: '80%'
+    }
+  });
+  let videoUrl = window.location.pathname.replace("/room/", "")
+  callFrame.join({ url: 'https://ablwr.daily.co/' + videoUrl })
+</script>
+<script src="client.js" defer></script>
+</body>
+</html>

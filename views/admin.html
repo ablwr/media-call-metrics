@@ -8,23 +8,20 @@
 </head>
 <body>
   <header><h1>media-call-metrics admin zone</h1></header>
-  <aside><div id="error"></div></aside>
+  <aside><a href="/">go back</a></aside>
   <main>
     <h2>The admin zone!</h2>
-      <button id="getRooms">
-        Get rooms
-      </button>
-      <button id="getSessions">
-        Get sessions
-      </button>
+
       <section class="dataSection">
         <h3>List of rooms</h3>
+        <button id="getRooms">Get rooms</button>
         <ul id="roomsList"></ul>
         <h3>List of sessions</h3>
-        <ul id="sessionsList"></ul>
+        <ul id="sessionsList">
+          <!-- Buttons with each Session ID build here (see public/admin.js) -->
+        </ul>
       </section>
-      <button id="button">Click to get a special session's data</button>
-      <section class="sessions">
+      <section id="sessions">
         <canvas id="videoRecvBitsPerSecond"></canvas>
         <canvas id="videoRecvPacketLoss"></canvas>
         <canvas id="videoSendBitsPerSecond"></canvas>

@@ -21,15 +21,16 @@ document.getElementById("makeRoom").onclick = function() {
 };
 
 async function collection() {
-	// We need videoRecvBitsPerSecond, videoRecvPacketLoss, 
+	// We need to collect:
+	// videoRecvBitsPerSecond, videoRecvPacketLoss, 
 	// videoSendBitsPerSecond, videoSendPacketLoss
-  // and timestamp
+  // and timestamp for each user
 	let netStats = await callFrame.getNetworkStats();
   let session_id = callFrame.participants().local.session_id;
   let user_id = callFrame.participants().local.user_id;
-	// insert netStats.stats.latest into sqlite database
+
   const data = { "session_id": session_id, "user_id": user_id, "logs": JSON.stringify(netStats.stats.latest) };
-  console.log(data);
+
   fetch("/log-data", {
     method: "POST",
     body: JSON.stringify(data),
