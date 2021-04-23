@@ -19,7 +19,7 @@ Administrator user goals:
 - [x] because calls have sessions, determine how to note those breaks, or if they should be separate charts
 - [x] data should be at 15s granularity level
 - [x] can click on each call to see call details
-- [ ] call details should be per user, not overall / for one user
+- [x] call details should be per user, not overall / for one user
 - [ ] Stretch goal: user should be able to delete rooms from the dashboard
 
 ## Getting started
