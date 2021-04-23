@@ -46,6 +46,7 @@ document.querySelectorAll('.sessionButton').forEach(button => {
     .then(res => res.json())
     .then(response => {
       // this big thing condenses the SQL rows into each user with their respective logs
+      console.log(response)
       const usersAndTheirLogs = Array.from(response.reduce((map, {user_id, logs}) => 
           map.set(user_id, [...(map.get(user_id) || []), JSON.parse(logs)]), new Map
         ), ([user_id, logs]) => ({user_id, logs})

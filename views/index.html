@@ -15,9 +15,25 @@
   <main>
   	<div class="userView">
       <button id="makeRoom">Make a room</button>
-      <span style="display:none;" id="newRoomWrapper"><a id="newRoom" href="">Visit room</a></span>
+      <span style="display:none;" id="newRoomWrapper">Thank you! Visit room (and share the link): <a id="newRoom" target="_blank" href=""></a></span>
     </div>
     <hr/>
   </main>
 </body>
+<script type="text/javascript">
+document.getElementById("makeRoom").onclick = function() {
+  fetch("/make-room", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" }
+  })
+  .then(res => res.json())
+  .then(response => {
+    console.log(response);
+    document.getElementById('newRoomWrapper').style.display = "";
+    document.getElementById("newRoom").setAttribute("href", ("/room/" + response.name));
+    document.getElementById("newRoom").innerText = response.name;
+  })
+  .catch(err => console.error(err));
+};
+</script>
 </html>

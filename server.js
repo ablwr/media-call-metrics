@@ -61,10 +61,15 @@ const dailyApi = axios.create({
   timeout: 3000, // this is equal to 3 seconds
 });
 
+let roomsToLog = [
+  { url_id: "hello-daily" },
+];
+
 // create a new room
 app.post("/make-room", async (request, response) => {
   try {
     const rooms = await apiBuilder("post", "/rooms", request.body);
+    roomsToLog.push({"url_id": rooms.name})
     response.json(rooms);
   } catch (e) {
     console.log("error: ", e);
@@ -127,14 +132,11 @@ app.post("/log-data", async (request, response) => {
 
 })
 
-let rooms = [
-  { url_id: "hello-daily" },
-  { url_id: "hello-ashley" },
-];
+
 
 
 app.param('room', function(request, response, next, value){
-  if (rooms.find(obj => obj.url_id == value)) {
+  if (roomsToLog.find(obj => obj.url_id == value)) {
     next();
   } else {
     // This is a reference to the 1995 masterwork Hackers, because

@@ -1,25 +1,3 @@
-document.getElementById("makeRoom").onclick = function() {
-  fetch("/make-room", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" }
-  })
-  .then(res => res.json())
-  .then(response => {
-  	console.log(response);
-  	document.getElementById('newRoomWrapper').style.display = "";
-    document.getElementById("newRoom").setAttribute("href", response["url"]);
-    document.getElementById("newRoom").innerText = response["url"];
-    callFrame = window.DailyIframe.createFrame();
-	  callFrame.join({ url: response["url"] });
-
-		window.setInterval(function() {
-		  collection();
-		}, 15000); // 15000 milliseconds or 15 seconds
-
-  })
-  .catch(err => console.error(err));
-};
-
 async function collection() {
 	// We need to collect:
 	// videoRecvBitsPerSecond, videoRecvPacketLoss, 
@@ -42,3 +20,8 @@ async function collection() {
     })
 
 }
+
+window.setInterval(function() {
+  console.log("collecting some network stats")
+  collection();
+}, 15000); // 15000 milliseconds or 15 seconds
